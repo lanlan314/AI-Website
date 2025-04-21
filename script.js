@@ -113,7 +113,28 @@ function sendMessage() {
     })
     .then(response => response.json())
     .then(data => {
-       
+        // 隐藏加载动画
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+
+        if (data.choices && data.choices.length > 0) {
+            displayMessage('bot', data.choices[0].message.content);
+        } else {
+            displayMessage('bot', '出错了，请稍后再试。');
+        }
+    })
+    .catch(error => {
+        // 隐藏加载动画
+        if (loadingElement) {
+            loadingElement.style.display = 'none';
+        }
+
+        displayMessage('bot', '出错了，请稍后再试。');
+        console.error('Error:', error);
+    });
+}
+
 // 添加主题切换功能
 function toggleTheme() {
     document.body.classList.toggle('dark-mode');
